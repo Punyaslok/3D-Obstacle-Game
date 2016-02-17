@@ -46,6 +46,8 @@ GLuint createTexture (const char* filename);
 
 GLfloat deg2rad(GLfloat x);
 
+GLfloat dist(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
+
 #include "essentials.cpp"
 
 #endif

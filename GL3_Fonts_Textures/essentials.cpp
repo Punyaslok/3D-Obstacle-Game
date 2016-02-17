@@ -1,10 +1,12 @@
-#include <math.h>
+#include <bits/stdc++.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-GLfloat scr_width, scr_height;
+using namespace std;
 
+GLfloat scr_width, scr_height;
+int right_click_flag, last_mouse_x, last_mouse_y;
 
 //Camera Stuff
 int current_view;
@@ -13,6 +15,9 @@ glm::vec3 top_view_eye, top_view_tar, top_view_up;
 glm::vec3 tower_view_eye, tower_view_tar, tower_view_up;
 glm::vec3 follow_view_eye, follow_view_tar, follow_view_up;
 glm::vec3 adventurer_view_eye, adventurer_view_tar, adventurer_view_up;
+glm::vec3 helicopter_view_eye, helicopter_view_tar, helicopter_view_up;
+GLfloat helicopter_view_dist_max, helicopter_view_dist_min;
+GLfloat helicopter_view_dist, helicopter_view_azimuthal, helicopter_view_elevation;		//polar coordinates for helicopter view, azimuthal lies between 0 and 360, elevation lies between 0 and 90
 GLfloat cam_rot_ang;
 
 
@@ -25,9 +30,15 @@ GLfloat base_bottom_R, base_bottom_G, base_bottom_B;
 
 
 //Player details
+int lives, score, level;
+GLfloat gravity;
 GLfloat speed;	// how much pixels player moves after each button press
 GLfloat player_top_R, player_top_G, player_top_B;
 GLfloat player_bottom_R, player_bottom_G, player_bottom_B;
+
+//Monsters
+int monster_ct;
+GLfloat monsters_R, monsters_G, monsters_B;
 
 
 
@@ -205,4 +216,19 @@ GLuint createTexture (const char* filename)
 GLfloat deg2rad (GLfloat x)
 {
 	return (x*M_PI)/180;
+}
+
+vector <GLfloat> polar_to_cartesian(GLfloat r, GLfloat theta, GLfloat phi)
+{
+	vector <GLfloat> ret;
+	ret.resize(3);
+	ret[0] = r * cos(deg2rad(phi)) * cos(deg2rad(theta));
+	ret[1] = r * cos(deg2rad(phi)) * sin(deg2rad(theta));
+	ret[2] = r * sin(deg2rad(phi));
+	return ret;
+}
+
+GLfloat dist(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2)
+{
+	return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 }

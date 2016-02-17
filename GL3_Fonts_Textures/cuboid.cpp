@@ -6,8 +6,13 @@ class Cuboid
 public:
 	VAO *cuboid;
 	GLfloat centre_x, centre_y, centre_z, l, b, h;
-	void initialize (GLfloat cx, GLfloat cy, GLfloat cz, GLfloat len, GLfloat br, GLfloat ht)
+
+	int vertical_moving_box;
+	int vertical_move_direction, vertical_move_speed;		// +1 for moving up, -1 for moving down. Only for moving tiles
+
+	void initialize (GLfloat cx, GLfloat cy, GLfloat cz, GLfloat len, GLfloat br, GLfloat ht, int moving=0, int ver_move_speed=0, int ver_move_direction=1)
 	{
+		vertical_moving_box = moving;	vertical_move_speed=ver_move_speed;	vertical_move_direction=ver_move_direction;
 		// centre_x and centre_y are bottom corner coordinates
 		// l is associated with x, b with y, and h with z
 		centre_x = cx;	centre_y = cy;	centre_z = cz;	l = ht;		b = len;		h = br;
@@ -145,7 +150,6 @@ public:
 			return 1;
 		return 0;
 	}
-
 
 	void drawCuboid(glm::mat4 VP)
 	{
